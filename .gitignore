@@ -1,9 +1,6 @@
 
 # Build folders to ignore
-bin
 build
-target
-
 build.local.*
 
 
