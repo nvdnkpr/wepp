@@ -113,15 +113,20 @@
                     return settings.dir.includes.length === 0;
                 }
             };
+        },
+
+
+        fsExt = {
+            mkdir: mkdir,
+            walk: walk,
+            filter: filter
         };
 
 
     if (module) {
-        module.exports = {
-            mkdir: mkdir,
-            walk: walk,
-            filter: filter
-        }
+        module.exports = fsExt;
+    } else {
+        global.FSEXT = fsExt;
     }
 
 })(this);
