@@ -14,6 +14,7 @@ of the [BSD License](http://github.com/lrsjng/wepp/blob/master/src/wepp/lib/cssm
 
 * updated `package.json`
 * added comments to `wepp.ant.xml`
+* updated `cssmin.js` to version from 2011-09-02
 
 
 ### v0.1.0 · *2011-08-30*
