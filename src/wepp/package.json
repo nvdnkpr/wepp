@@ -1,7 +1,7 @@
 {
     "name": "wepp",
     "version": "%BUILD_VERSION%",
-    "description": "a node based Less/CSS and JavaScript Preprocessor",
+    "description": "a node based LESS/CSS and JavaScript Preprocessor",
     "url": "http://larsjung.de/wepp",
     "keywords": ["preprocessor", "less", "css", "lesscss", "js", "javascript"],
     "author": "Lars Jung <lrsjng@gmail.com>",

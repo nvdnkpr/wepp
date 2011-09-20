@@ -1,4 +1,4 @@
-# wepp · a node based Less/CSS and JavaScript Preprocessor
+# wepp · a node based LESS/CSS and JavaScript Preprocessor
 
 * Website with download, docs and demo: <http://larsjung.de/wepp>
 * Sources: <http://github.com/lrsjng/wepp>
@@ -13,6 +13,7 @@ of the [BSD License](http://github.com/lrsjng/wepp/blob/master/src/wepp/lib/cssm
 ### v0.2.0 · *2011-09-??*
 
 * updated `package.json`
+* added comments to `wepp.ant.xml`
 
 
 ### v0.1.0 · *2011-08-30*
