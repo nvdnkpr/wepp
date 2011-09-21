@@ -10,7 +10,7 @@ of the [BSD License](http://github.com/lrsjng/wepp/blob/master/src/wepp/lib/cssm
 
 ## Changelog
 
-### v0.2.0 · *2011-09-??*
+### v0.2.0 · *2011-09-22*
 
 * updated `package.json`
 * added comments to `wepp.ant.xml`
