@@ -1,8 +1,8 @@
 
-# Build folders to ignore
+# Build files and folders to ignore
 build
 build.local.*
-
+release
 
 # Eclipse
 .classpath

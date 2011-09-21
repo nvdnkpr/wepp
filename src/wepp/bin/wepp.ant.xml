@@ -1,7 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <project name="wepp.macros" basedir=".">
 
-    <!-- property ${wepp} must point to the wepp executable (bin) -->
+    <!--
+        Use the marcros with care!!
+        Macro wepp.dir deletes subfolder 'inc' and any '*.less'
+        files from the specified directory after processing this
+        directory. So make sure you know what you do if you use
+        this macro or remove the delete section from it.
+
+        Property ${wepp} must point to the wepp executable (bin).
+    -->
 
     <macrodef name="wepp">
         <attribute name="file" />

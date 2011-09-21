@@ -10,6 +10,7 @@
 
 
         reEscape = function (sequence) {
+
             return sequence.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, "\\$&");
         },
         mkdir = function (dir, mode) {
@@ -31,7 +32,7 @@
                 if (dir !== parent && mkdir(parent, mode)) {
                     fs.mkdirSync(dir, mode);
                     return true;
-                };
+                }
             }
             return false;
         },
@@ -113,15 +114,20 @@
                     return settings.dir.includes.length === 0;
                 }
             };
+        },
+
+
+        fsExt = {
+            mkdir: mkdir,
+            walk: walk,
+            filter: filter
         };
 
 
     if (module) {
-        module.exports = {
-            mkdir: mkdir,
-            walk: walk,
-            filter: filter
-        }
+        module.exports = fsExt;
+    } else {
+        global.FSEXT = fsExt;
     }
 
-})(this);
+}(this));
