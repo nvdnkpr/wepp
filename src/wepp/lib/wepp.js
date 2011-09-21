@@ -2,7 +2,6 @@
     "use strict";
     /*globals process, module, console, require */
 
-
     var path = require('path'),
         fs = require('fs'),
         sys = require('sys'),
@@ -210,7 +209,7 @@
                 }),
                 callback: function (filepath, stats) {
 
-                    var outpath = filepath.replace(RegExp("^" + inDir), outDir).replace(/\.less$/, ".css");
+                    var outpath = filepath.replace(new RegExp("^" + inDir), outDir).replace(/\.less$/, ".css");
 
                     processFile(settings, filepath, outpath);
                 }
@@ -243,4 +242,4 @@
         global.WEPP = wepp;
     }
 
-})(this);
+}(this));

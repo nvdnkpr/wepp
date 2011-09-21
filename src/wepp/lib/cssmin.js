@@ -34,8 +34,8 @@ YAHOO.compressor._extractDataUrls = function (css, preservedTokens) {
         token,
         pattern = /url\(\s*(["']?)data\:/g;
 
-    // Since we need to account for non-base64 data urls, we need to handle 
-    // ' and ) being part of the data string. Hence switching to indexOf,
+    // Since we need to account for non-base64 data urls, we need to handle
+    // ' and) being part of the data string. Hence switching to indexOf,
     // to determine whether or not we have matching string terminators and
     // handling sb appends directly, instead of using matcher.append* methods.
 
@@ -54,19 +54,19 @@ YAHOO.compressor._extractDataUrls = function (css, preservedTokens) {
 
         while(foundTerminator === false && endIndex+1 <= maxIndex) {
             endIndex = css.indexOf(terminator, endIndex + 1);
-    
+
             // endIndex == 0 doesn't really apply here
             if ((endIndex > 0) && (css.charAt(endIndex - 1) !== '\\')) {
                 foundTerminator = true;
                 if (")" != terminator) {
-                    endIndex = css.indexOf(")", endIndex); 
+                    endIndex = css.indexOf(")", endIndex);
                 }
             }
         }
 
         // Enough searching, start moving stuff over to the buffer
         sb.push(css.substring(appendIndex, m.index));
-    
+
         if (foundTerminator) {
             token = css.substring(startIndex, endIndex);
             token = token.replace(/\s+/g, "");
@@ -74,7 +74,7 @@ YAHOO.compressor._extractDataUrls = function (css, preservedTokens) {
 
             preserver = "url(___YUICSSMIN_PRESERVED_TOKEN_" + (preservedTokens.length - 1) + "___)";
             sb.push(preserver);
-    
+
             appendIndex = endIndex + 1;
         } else {
             // No end terminator found, re-add the whole match. Should we throw/warn here?
@@ -253,7 +253,7 @@ YAHOO.compressor.cssmin = function (css, linebreakpos) {
             group[3].toLowerCase() === group[4].toLowerCase() &&
             group[5].toLowerCase() === group[6].toLowerCase() &&
             group[7].toLowerCase() === group[8].toLowerCase()
-        ) {
+       ) {
             return (group[1] + group[2] + '#' + group[3] + group[5] + group[7]).toLowerCase();
         } else {
             return group[0].toLowerCase();

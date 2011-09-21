@@ -3,7 +3,7 @@
 
     <!--
         Use the marcros with care!!
-        Macro wepp.dir deletes subfolder 'inc' any any '*.less'
+        Macro wepp.dir deletes subfolder 'inc' and any '*.less'
         files from the specified directory after processing this
         directory. So make sure you know what you do if you use
         this macro or remove the delete section from it.

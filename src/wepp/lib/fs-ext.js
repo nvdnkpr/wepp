@@ -10,6 +10,7 @@
 
 
         reEscape = function (sequence) {
+
             return sequence.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, "\\$&");
         },
         mkdir = function (dir, mode) {
@@ -31,7 +32,7 @@
                 if (dir !== parent && mkdir(parent, mode)) {
                     fs.mkdirSync(dir, mode);
                     return true;
-                };
+                }
             }
             return false;
         },
@@ -129,4 +130,4 @@
         global.FSEXT = fsExt;
     }
 
-})(this);
+}(this));
