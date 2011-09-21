@@ -239,4 +239,3 @@ YAHOO.compressor.cssmin = function (css, linebreakpos) {
 if (module) {
     module.exports = YAHOO.compressor.cssmin;
 }
-
