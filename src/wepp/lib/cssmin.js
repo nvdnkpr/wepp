@@ -253,7 +253,7 @@ YAHOO.compressor.cssmin = function (css, linebreakpos) {
             group[3].toLowerCase() === group[4].toLowerCase() &&
             group[5].toLowerCase() === group[6].toLowerCase() &&
             group[7].toLowerCase() === group[8].toLowerCase()
-      ) {
+        ) {
             return (group[1] + group[2] + '#' + group[3] + group[5] + group[7]).toLowerCase();
         } else {
             return group[0].toLowerCase();
@@ -304,7 +304,7 @@ YAHOO.compressor.cssmin = function (css, linebreakpos) {
 
 
 /*
- * customized part to make cssmin it a node module
+ * customized part to make cssmin a node module
  */
 if (module) {
     module.exports = function (css, linebreakpos) {
