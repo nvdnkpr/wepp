@@ -13,7 +13,8 @@
             content: undefined,
             charset: "utf-8"
         },
-        pattern = /^([ \t]*)\/\/[ \t]*@include[ \t]+(|base:)(["'])(.+)\3[ \t]*$/gm,
+        reInclude = /^([ \t]*)\/\/[ \t]*@include[ \t]+(|base:)(["'])(.+)\3[ \t]*$/gm,
+        reEmptyLine = /^\s+$/gm,
         message = function (type, message, stack) {
 
             if (console) {
@@ -31,7 +32,7 @@
             }
             stack.push(file);
 
-            content = content.replace(pattern, function (match, indent, mode, quote, reference) {
+            content = content.replace(reInclude, function (match, indent, mode, quote, reference) {
 
                 var refFile = path.normalize(path.join(path.dirname(file), reference)),
                     refContent;
@@ -40,6 +41,7 @@
                     refContent = fs.readFileSync(refFile, settings.charset);
                     refContent = recursion(settings, stack, refFile, refContent);
                     refContent = indent + refContent.replace(/\n/g, "\n" + indent);
+                    refContent = refContent.replace(reEmptyLine, "");
                 } catch (err) {
                     refContent = match;
                     message("err", "not found: '" + reference + "' -> '" + refFile + "'", stack);
