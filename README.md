@@ -12,7 +12,7 @@ of the [BSD License](http://github.com/lrsjng/wepp/blob/master/src/wepp/lib/cssm
 
 ### v0.4.0 · *2011-09-??*
 
-* 
+* adds a trailing `;` to included files if missing
 
 
 ### v0.3.0 · *2011-09-24*

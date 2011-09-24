@@ -15,6 +15,7 @@
         },
         reInclude = /^([ \t]*)\/\/[ \t]*@include[ \t]+(|base:)(["'])(.+)\3[ \t]*$/gm,
         reEmptyLine = /^\s+$/gm,
+        reEndsFailSafe = /;?(\s*)$/,
         message = function (type, message, stack) {
 
             if (console) {
@@ -39,6 +40,9 @@
 
                 try {
                     refContent = fs.readFileSync(refFile, settings.charset);
+                    refContent = refContent.replace(reEndsFailSafe, function (match, whiteEnd) {
+                        return ";" + whiteEnd;
+                    });
                     refContent = recursion(settings, stack, refFile, refContent);
                     refContent = indent + refContent.replace(/\n/g, "\n" + indent);
                     refContent = refContent.replace(reEmptyLine, "");
