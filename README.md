@@ -13,7 +13,7 @@ of the [BSD License](http://github.com/lrsjng/wepp/blob/master/src/wepp/lib/cssm
 ### v0.3.0 · *2011-09-??*
 
 * Removes whitespaces from empty JavaScript lines
-* 
+* Finally updates `cssmin.js`
 
 
 ### v0.2.1 · *2011-09-22*
