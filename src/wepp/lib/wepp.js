@@ -19,12 +19,43 @@
             compress: true,
             stripHeader: false
         },
+        cmdLineUsage = function () {
+
+            var lines = [
+                "Usage:  wepp [Options] --inFile <FILE> --outFile <FILE>",
+                "        wepp [Options] --inDir <DIR> --outDir <DIR>",
+                "",
+                "Options:",
+                "    --cs",
+                "    --charset",
+                "        source and target file encoding",
+                "        default: utf-8",
+                "",
+                "    --lb",
+                "    --linebreak",
+                "        desired line length in target files",
+                "        -1: no line breaks",
+                "        default: -1",
+                "",
+                "    --nc",
+                "    --no-compression",
+                "        turns off compression",
+                "",
+                "    --sh",
+                "    --strip-header",
+                "        strips even header comments in case of compression"
+            ];
+            return lines.join('\n');
+        },
         message = function (type, message) {
 
             if (console) {
                 console.log("[wepp:" + type + "] " + message);
                 if (arguments.length > 2) {
                     console.log(Array.prototype.slice.call(arguments, 2));
+                }
+                if (type === "err") {
+                    console.log("\n" + cmdLineUsage());
                 }
             }
         },
