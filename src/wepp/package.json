@@ -6,7 +6,7 @@
     "keywords": ["preprocessor", "less", "css", "lesscss", "js", "javascript"],
     "author": "Lars Jung <lrsjng@gmail.com>",
     "bin": {
-        "wepp": "./bin/wepp-rel"
+        "wepp": "./bin/wepp"
     },
     "main": "./lib/wepp",
     "dependencies": {

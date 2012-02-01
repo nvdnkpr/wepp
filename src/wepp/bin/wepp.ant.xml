@@ -1,50 +1,58 @@
 <?xml version="1.0" encoding="utf-8"?>
 <project name="wepp.macros" basedir=".">
 
-    <!--
-        Use the marcros with care!!
-        Macro wepp.dir deletes subfolder 'inc' and any '*.less'
-        files from the specified directory after processing this
-        directory. So make sure you know what you do if you use
-        this macro or remove the delete section from it.
 
-        Property ${wepp} must point to the wepp executable (bin).
-    -->
+    <macrodef name="bytes">
+        <attribute name="file" />
+        <attribute name="tofile" />
+        <sequential>
+            <length file="@{file}" property="@{file}-length" />
+            <length file="@{tofile}" property="@{tofile}-length" />
+            <echo>  bytes ${@{file}-length} -> ${@{tofile}-length}</echo>
+        </sequential>
+    </macrodef>
+
+    <macrodef name="wepp-args">
+        <attribute name="args" default="" />
+        <sequential>
+            <exec executable="${tool.wepp}" failonerror="true">
+                <arg line="@{args}" />
+            </exec>
+        </sequential>
+    </macrodef>
 
     <macrodef name="wepp">
         <attribute name="file" />
-        <attribute name="toFile" />
-        <attribute name="args" default="" />
+        <attribute name="tofile" />
         <sequential>
-            <exec executable="${wepp}">
-                <arg line="@{args}" />
-                <arg value="--in" />
-                <arg value="@{file}" />
-                <arg value="--out" />
-                <arg value="@{toFile}" />
-            </exec>
+            <wepp-args args="--nc --inFile '@{file}' --outFile '@{toFile}'" />
         </sequential>
     </macrodef>
 
-    <macrodef name="wepp.dir">
-        <attribute name="dir" />
-        <attribute name="args" default="" />
+    <macrodef name="wepp-min">
+        <attribute name="file" />
+        <attribute name="tofile" />
         <sequential>
-            <exec executable="${wepp}">
-                <arg line="@{args}" />
-                <arg value="--inDir" />
-                <arg value="@{dir}" />
-                <arg value="--outDir" />
-                <arg value="@{dir}" />
-            </exec>
-            <delete dir="@{dir}/inc">
-                <fileset
-                    dir="."
-                    includes="@{dir}/**/*.less"
-                    excludes="@{dir}/inc/**,@{dir}/lib/**"
-                />
-            </delete>
+            <wepp-args args="--inFile '@{file}' --outFile '@{toFile}'" />
+            <bytes file="@{file}" toFile="@{toFile}" />
         </sequential>
     </macrodef>
+
+    <macrodef name="wepp-dir">
+        <attribute name="dir" />
+        <attribute name="todir" />
+        <sequential>
+            <wepp-args args="--nc --inDir '@{dir}' --outDir '@{todir}'" />
+        </sequential>
+    </macrodef>
+
+    <macrodef name="wepp-dir-min">
+        <attribute name="dir" />
+        <attribute name="todir" />
+        <sequential>
+            <wepp-args args="--inDir '@{dir}' --outDir '@{todir}'" />
+        </sequential>
+    </macrodef>
+
 
 </project>

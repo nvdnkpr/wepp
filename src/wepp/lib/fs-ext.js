@@ -1,17 +1,16 @@
-(function (global) {
-    "use strict";
-    /*globals process, module, console, require */
 
+(function (global) {
+'use strict';
+/*jslint confusion: true, node: true, nomen: true, white: true */
 
     var path = require('path'),
         fs = require('fs'),
-        sys = require('sys'),
-        _ = require("underscore"),
+        _ = require('underscore'),
 
 
         reEscape = function (sequence) {
 
-            return sequence.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, "\\$&");
+            return sequence.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, '\\$&');
         },
         mkdir = function (dir, mode) {
 
@@ -85,27 +84,27 @@
                 var i, l, ext, dir;
 
                 if (stats.isFile()) {
-                    for (i = 0, l = settings.ext.excludes.length; i < l; i++) {
+                    for (i = 0, l = settings.ext.excludes.length; i < l; i += 1) {
                         ext = settings.ext.excludes[i];
-                        if (filepath.match(new RegExp(reEscape(ext) + "$"))) {
+                        if (filepath.match(new RegExp(reEscape(ext) + '$'))) {
                             return false;
                         }
                     }
-                    for (i = 0, l = settings.ext.includes.length; i < l; i++) {
+                    for (i = 0, l = settings.ext.includes.length; i < l; i += 1) {
                         ext = settings.ext.includes[i];
-                        if (filepath.match(new RegExp(reEscape(ext) + "$"))) {
+                        if (filepath.match(new RegExp(reEscape(ext) + '$'))) {
                             return true;
                         }
                     }
                     return settings.ext.includes.length === 0;
                 } else if (stats.isDirectory()) {
-                    for (i = 0, l = settings.dir.excludes.length; i < l; i++) {
+                    for (i = 0, l = settings.dir.excludes.length; i < l; i += 1) {
                         dir = settings.dir.excludes[i];
                         if (filepath === path.join(settings.dir.base, dir)) {
                             return false;
                         }
                     }
-                    for (i = 0, l = settings.dir.includes.length; i < l; i++) {
+                    for (i = 0, l = settings.dir.includes.length; i < l; i += 1) {
                         dir = settings.dir.includes[i];
                         if (filepath === path.join(settings.dir.base, dir)) {
                             return true;

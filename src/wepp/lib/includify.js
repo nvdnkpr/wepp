@@ -1,34 +1,35 @@
+
 (function (global) {
-    "use strict";
-    /*globals module, console, require, process */
+'use strict';
+/*jslint confusion: true, node: true, nomen: true, regexp: true, white: true */
 
     var path = require('path'),
         fs = require('fs'),
-        sys = require('sys'),
-        _ = require("underscore"),
+        _ = require('underscore'),
 
 
         defaults = {
             file: undefined,
             content: undefined,
-            charset: "utf-8"
+            charset: 'utf-8'
         },
-        reInclude = /^([ \t]*)\/\/[ \t]*@include[ \t]+(|base:)(["'])(.+)\3[ \t]*$/gm,
+        reInclude = /^([ \t]*)\/\/[ \t]*@include[ \t]+(|base:)(["'])(.+)\3[; \t]*$/gm,
         reEmptyLine = /^\s+$/gm,
         reEndsFailSafe = /;?(\s*)$/,
         message = function (type, message, stack) {
+            /*global console */
 
             if (console) {
-                console.log("[includify:" + type + "] " + message);
+                console.log('[includify:' + type + '] ' + message);
                 if (stack) {
-                    console.log("stack", stack);
+                    console.log('stack', stack);
                 }
             }
         },
         recursion = function (settings, stack, file, content) {
 
             if (_.indexOf(stack, file) >= 0) {
-                message("err", "circular reference: '" + file + "'", stack);
+                message('err', 'circular reference: "' + file + '"', stack);
                 return content;
             }
             stack.push(file);
@@ -41,14 +42,14 @@
                 try {
                     refContent = fs.readFileSync(refFile, settings.charset);
                     refContent = refContent.replace(reEndsFailSafe, function (match, whiteEnd) {
-                        return ";" + whiteEnd;
+                        return ';' + whiteEnd;
                     });
                     refContent = recursion(settings, stack, refFile, refContent);
-                    refContent = indent + refContent.replace(/\n/g, "\n" + indent);
-                    refContent = refContent.replace(reEmptyLine, "");
+                    refContent = indent + refContent.replace(/\n/g, '\n' + indent);
+                    refContent = refContent.replace(reEmptyLine, '');
                 } catch (err) {
                     refContent = match;
-                    message("err", "not found: '" + reference + "' -> '" + refFile + "'", stack);
+                    message('err', 'not found: "' + reference + '" -> "' + refFile + '"', stack);
                 }
 
                 return refContent;
@@ -63,11 +64,11 @@
                 settings = _.extend({}, defaults, options);
 
             if (!settings.file && !settings.content) {
-                message("err", "neither file nor content specified");
+                message('err', 'neither file nor content specified');
                 return;
             }
 
-            file = settings.file || path.join(process.cwd(), "INPUT");
+            file = settings.file || path.join(process.cwd(), 'INPUT');
             content = settings.content || fs.readFileSync(file, settings.charset);
             return recursion(settings, [], file, content);
         },
