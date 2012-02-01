@@ -1,36 +1,70 @@
+
 (function (global) {
-    "use strict";
-    /*globals process, module, console, require */
+'use strict';
+/*jslint confusion: true, node: true, nomen: true, white: true */
 
     var path = require('path'),
         fs = require('fs'),
-        sys = require('sys'),
-        _ = require("underscore"),
-        less = require("less"),
-        uglify = require("uglify-js"),
-        cssmin = require("./cssmin"),
-        includify = require("./includify"),
-        fsExt = require("./fs-ext"),
+        _ = require('underscore'),
+        less = require('less'),
+        uglify = require('uglify-js'),
+        cssmin = require('./cssmin'),
+        includify = require('./includify'),
+        fsExt = require('./fs-ext'),
 
 
         defaults = {
-            charset: "utf-8",
+            charset: 'utf-8',
             linebreak: -1,
             compress: true,
             stripHeader: false
         },
+        cmdLineUsage = function () {
+
+            var lines = [
+                'wepp %BUILD_VERSION%',
+                '',
+                'Usage:  wepp [Options] --inFile <FILE> --outFile <FILE>',
+                '        wepp [Options] --inDir <DIR> --outDir <DIR>',
+                '',
+                'Options:',
+                '    --cs',
+                '    --charset',
+                '        source and target file encoding',
+                '        default: utf-8',
+                '',
+                '    --lb',
+                '    --linebreak',
+                '        desired line length in target files',
+                '        -1: no line breaks',
+                '        default: -1',
+                '',
+                '    --nc',
+                '    --no-compression',
+                '        turns off compression',
+                '',
+                '    --sh',
+                '    --strip-header',
+                '        strips even header comments in case of compression'
+            ];
+            return lines.join('\n');
+        },
         message = function (type, message) {
+            /*global console */
 
             if (console) {
-                console.log("[wepp:" + type + "] " + message);
+                console.log('[wepp:' + type + '] ' + message);
                 if (arguments.length > 2) {
                     console.log(Array.prototype.slice.call(arguments, 2));
+                }
+                if (type === 'err') {
+                    console.log('\n' + cmdLineUsage());
                 }
             }
         },
         absFile = function (file) {
 
-            return (file && file[0] != '/') ? path.join(process.cwd(), file) : file;
+            return (file && file[0] !== '/') ? path.join(process.cwd(), file) : file;
         },
         parseArgs = function (args) {
 
@@ -88,15 +122,15 @@
         },
         getHeaderComment = function (content) {
 
-            return content.match(/^\s*\/\*/) ? content.substr(0, content.indexOf("*/") + 2).trim() + "\n" : "";
+            return content.match(/^\s*\/\*/) ? content.substr(0, content.indexOf('*/') + 2).trim() + '\n' : '';
         },
         result = function (settings, outFile, content) {
 
             if (outFile) {
-                fsExt.mkdir(path.dirname(outFile), "755");
+                fsExt.mkdir(path.dirname(outFile), '755');
                 fs.writeFileSync(outFile, content, settings.charset);
-            } else {
-                sys.puts(content);
+            } else if (console) {
+                console.log(content);
             }
         },
         cssifyLess = function (settings, inFile, content, callback) {
@@ -128,14 +162,15 @@
             var content, header;
 
             if (outFile) {
-                message("css" + (settings.compress ? "+min" : ""), "'" + inFile + "' -> '" + outFile + "'");
+                message('css' + (settings.compress ? '+min' : ''), '\'' + inFile + '\' -> \'' + outFile + '\'');
             }
             content = fs.readFileSync(inFile, settings.charset);
             header = getHeaderComment(content);
             cssifyLess(settings, inFile, content, function (content) {
                 if (settings.compress) {
-                    content = (!settings.stripHeader ? header : "") + minifyCss(settings, content);
+                    content = (!settings.stripHeader ? header : '') + minifyCss(settings, content);
                 }
+                //message('size', content.length + ' bytes');
                 result(settings, outFile, content);
             });
         },
@@ -156,14 +191,15 @@
             var content, header;
 
             if (outFile) {
-                message("js" + (settings.compress ? "+min" : ""), "'" + inFile + "' -> '" + outFile + "'");
+                message('js' + (settings.compress ? '+min' : ''), '\'' + inFile + '\' -> \'' + outFile + '\'');
             }
             content = fs.readFileSync(inFile, settings.charset);
             header = getHeaderComment(content);
             content = includifyJs(settings, inFile, content);
             if (settings.compress) {
-                content = (!settings.stripHeader ? header : "") + uglifyJs(settings, content);
+                content = (!settings.stripHeader ? header : '') + uglifyJs(settings, content);
             }
+            message('js' + (settings.compress ? '+min' : '') + ' size', content.length + ' bytes');
             result(settings, outFile, content);
         },
         processFile = function (options, inFile, outFile) {
@@ -172,17 +208,17 @@
                 ext;
 
             if (!inFile) {
-                message("err", "input file must be specified");
+                message('err', 'input file must be specified');
                 return;
             }
 
             ext = path.extname(inFile);
-            if (ext === ".css" || ext === ".less") {
+            if (ext === '.css' || ext === '.less') {
                 processCss(settings, inFile, outFile);
-            } else if (ext === ".js") {
+            } else if (ext === '.js') {
                 processJs(settings, inFile, outFile);
             } else {
-                message("err", "unsupported extension '" + inFile + "'");
+                message('err', 'unsupported extension \'' + inFile + '\'');
             }
         },
         processDir = function (options, inDir, outDir) {
@@ -190,7 +226,7 @@
             var settings = _.extend({}, defaults, options);
 
             if (!inDir || !outDir) {
-                message("err", "input and output directory must be specified");
+                message('err', 'input and output directory must be specified');
                 return;
             }
 
@@ -198,18 +234,18 @@
                 dir: inDir,
                 filter: fsExt.filter({
                     ext: {
-                        includes: [".less", ".css", ".js"],
-                        excludes: [".min.js", ".min.css"]
+                        includes: ['.less', '.css', '.js'],
+                        excludes: ['.min.js', '.min.css']
                     },
                     dir: {
                         base: inDir,
                         includes: [],
-                        excludes: ["inc", "lib"]
+                        excludes: ['inc', 'lib']
                     }
                 }),
                 callback: function (filepath, stats) {
 
-                    var outpath = filepath.replace(new RegExp("^" + inDir), outDir).replace(/\.less$/, ".css");
+                    var outpath = filepath.replace(new RegExp('^' + inDir), outDir).replace(/\.less$/, '.css');
 
                     processFile(settings, filepath, outpath);
                 }
@@ -224,7 +260,7 @@
             } else if (parsed.inDir) {
                 processDir(parsed.options, parsed.inDir, parsed.outDir);
             } else {
-                message("err", "either input file or directory must be specified");
+                message('err', 'either input file or directory must be specified');
             }
         },
 

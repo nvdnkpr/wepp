@@ -45,7 +45,7 @@ YAHOO.compressor._extractDataUrls = function (css, preservedTokens) {
         token,
         pattern = /url\(\s*(["']?)data\:/g;
 
-    // Since we need to account for non-base64 data urls, we need to handle 
+    // Since we need to account for non-base64 data urls, we need to handle
     // ' and ) being part of the data string. Hence switching to indexOf,
     // to determine whether or not we have matching string terminators and
     // handling sb appends directly, instead of using matcher.append* methods.
@@ -65,12 +65,12 @@ YAHOO.compressor._extractDataUrls = function (css, preservedTokens) {
 
         while(foundTerminator === false && endIndex+1 <= maxIndex) {
             endIndex = css.indexOf(terminator, endIndex + 1);
-    
+
             // endIndex == 0 doesn't really apply here
             if ((endIndex > 0) && (css.charAt(endIndex - 1) !== '\\')) {
                 foundTerminator = true;
                 if (")" != terminator) {
-                    endIndex = css.indexOf(")", endIndex); 
+                    endIndex = css.indexOf(")", endIndex);
                 }
             }
         }
@@ -101,13 +101,13 @@ YAHOO.compressor._extractDataUrls = function (css, preservedTokens) {
 
 /**
  * Utility method to compress hex color values of the form #AABBCC to #ABC.
- * 
+ *
  * DOES NOT compress CSS ID selectors which match the above pattern (which would break things).
  * e.g. #AddressForm { ... }
  *
- * DOES NOT compress IE filters, which have hex color values (which would break things). 
+ * DOES NOT compress IE filters, which have hex color values (which would break things).
  * e.g. filter: chroma(color="#FFFFFF");
- * 
+ *
  * DOES NOT compress invalid hex values.
  * e.g. background-color: #aabbccdd
  *
@@ -119,28 +119,35 @@ YAHOO.compressor._extractDataUrls = function (css, preservedTokens) {
 YAHOO.compressor._compressHexColors = function(css) {
 
     // Look for hex colors inside { ... } (to avoid IDs) and which don't have a =, or a " in front of them (to avoid filters)
-    var pattern = /([^"'=\s])(\s*)#([0-9a-f])([0-9a-f])([0-9a-f])([0-9a-f])([0-9a-f])([0-9a-f])(\}|[^0-9a-f{][^{]*?\})/gi,
+    var pattern = /(\=\s*?["']?)?#([0-9a-f])([0-9a-f])([0-9a-f])([0-9a-f])([0-9a-f])([0-9a-f])(\}|[^0-9a-f{][^{]*?\})/gi,
         m,
         index = 0,
+        isFilter,
         sb = [];
 
     while ((m = pattern.exec(css)) !== null) {
 
-        if (m[3].toLowerCase() == m[4].toLowerCase() &&
-            m[5].toLowerCase() == m[6].toLowerCase() &&
-            m[7].toLowerCase() == m[8].toLowerCase()) {
+        sb.push(css.substring(index, m.index));
 
-            // Enough searching, start moving stuff over to the buffer
-            sb.push(css.substring(index, m.index));
-            sb.push((m[1] + m[2] + "#" + m[3] + m[5] + m[7]).toLowerCase());
+        isFilter = m[1];
 
-            index = pattern.lastIndex = pattern.lastIndex - m[9].length;
+        if (isFilter) {
+            // Restore, maintain case, otherwise filter will break
+            sb.push(m[1] + "#" + (m[2] + m[3] + m[4] + m[5] + m[6] + m[7]));
         } else {
-            sb.push(css.substring(index, m.index));
-            sb.push((m[1] + m[2] + "#" + m[3] + m[4] + m[5] + m[6] + m[7] + m[8]).toLowerCase());
+            if (m[2].toLowerCase() == m[3].toLowerCase() &&
+                m[4].toLowerCase() == m[5].toLowerCase() &&
+                m[6].toLowerCase() == m[7].toLowerCase()) {
 
-            index = pattern.lastIndex = pattern.lastIndex - m[9].length;
+                // Compress.
+                sb.push("#" + (m[3] + m[5] + m[7]).toLowerCase());
+            } else {
+                // Non compressible color, restore but lower case.
+                sb.push("#" + (m[2] + m[3] + m[4] + m[5] + m[6] + m[7]).toLowerCase());
+            }
         }
+
+        index = pattern.lastIndex = pattern.lastIndex - m[8].length;
     }
 
     sb.push(css.substring(index));
@@ -350,7 +357,7 @@ YAHOO.compressor.cssmin = function (css, linebreakpos) {
  */
 if (module) {
     module.exports = function (css, linebreakpos) {
-        
+
         return YAHOO.compressor.cssmin(css, linebreakpos);
     };
 }

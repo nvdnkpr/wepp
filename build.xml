@@ -38,10 +38,21 @@
 
     <target name="release" depends="build">
         <mkdir dir="${release.dir}" />
-        <tar destfile="${release.dir}/${project.name}-${project.version}.tar" basedir="${build.dir}" />
-        <gzip destfile="${release.dir}/${project.name}-${project.version}.tar.gz" src="${release.dir}/${project.name}-${project.version}.tar" />
-        <delete file="${release.dir}/${project.name}-${project.version}.tar" />
         <zip destfile="${release.dir}/${project.name}-${project.version}.zip" basedir="${build.dir}" />
     </target>
+
+    <target name="lint" depends="init">
+        <jslint files="${src.dir}/wepp/lib/fs-ext.js ${src.dir}/wepp/lib/includify.js ${src.dir}/wepp/lib/wepp.js" />
+    </target>
+
+    <macrodef name="jslint">
+        <attribute name="files" />
+        <sequential>
+            <echo>JSLint @{files}</echo>
+            <exec executable="${tool.jslint}" failonerror="false">
+                <arg line="@{files}" />
+            </exec>
+        </sequential>
+    </macrodef>
 
 </project>

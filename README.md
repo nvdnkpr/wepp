@@ -1,4 +1,4 @@
-# wepp · a node based LESS/CSS and JavaScript Preprocessor
+# wepp - a node based LESS/CSS and JavaScript Preprocessor
 
 * Website with download, docs and demo: <http://larsjung.de/wepp>
 * Sources: <http://github.com/lrsjng/wepp>
@@ -10,18 +10,24 @@ of the [BSD License](http://github.com/lrsjng/wepp/blob/master/src/wepp/lib/cssm
 
 ## Changelog
 
-### v0.3.0 · *2011-09-24*
+### v0.4.0 - *2012-02-01*
+
+* adds a trailing `;` to included files if missing
+* updates `cssmin.js` to the version from 2011-09-29
+
+
+### v0.3.0 - *2011-09-24*
 
 * removes whitespaces from empty JavaScript lines
 * finally updates `cssmin.js` to the version from 2011-09-23
 
 
-### v0.2.1 · *2011-09-22*
+### v0.2.1 - *2011-09-22*
 
 * reverts `cssmin.js` to previous version
 
 
-### v0.2.0 · *2011-09-22*
+### v0.2.0 - *2011-09-22*
 
 * updated `package.json`
 * added comments to `wepp.ant.xml`
@@ -30,5 +36,5 @@ of the [BSD License](http://github.com/lrsjng/wepp/blob/master/src/wepp/lib/cssm
 * cleaned code
 
 
-### v0.1.0 · *2011-08-30*
+### v0.1.0 - *2011-08-30*
 
