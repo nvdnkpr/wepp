@@ -1,20 +1,20 @@
 {
-    "name": "wepp",
-    "version": "%BUILD_VERSION%",
-    "description": "a node based LESS/CSS and JavaScript Preprocessor",
-    "url": "http://larsjung.de/wepp",
-    "keywords": ["preprocessor", "less", "css", "lesscss", "js", "javascript"],
-    "author": "Lars Jung <lrsjng@gmail.com>",
-    "bin": {
-        "wepp": "./bin/wepp"
-    },
-    "main": "./lib/wepp",
-    "dependencies": {
-        "underscore": "1.1.x",
-        "less": "1.1.x",
-        "uglify-js": "1.0.x"
-    },
-    "engines": {
-        "node": "0.4.x"
-    }
+	"name": "wepp",
+	"version": "%BUILD_VERSION%",
+	"description": "a node based LESS/CSS and JavaScript Preprocessor",
+	"url": "http://larsjung.de/wepp",
+	"keywords": ["preprocessor", "less", "css", "lesscss", "js", "javascript"],
+	"author": "Lars Jung <lrsjng@gmail.com>",
+	"bin": {
+		"wepp": "./bin/wepp"
+	},
+	"main": "./lib/wepp",
+	"dependencies": {
+		"underscore": "1.1.x",
+		"less": "1.1.x",
+		"uglify-js": "1.0.x"
+	},
+	"engines": {
+		"node": "0.4.x"
+	}
 }

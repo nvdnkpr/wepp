@@ -10,6 +10,12 @@ of the [BSD License](http://github.com/lrsjng/wepp/blob/master/src/wepp/lib/cssm
 
 ## Changelog
 
+
+### v0.5.0 - *2012-02-??*
+
+* 
+
+
 ### v0.4.0 - *2012-02-01*
 
 * adds a trailing `;` to included files if missing
