@@ -13,7 +13,7 @@ of the [BSD License](http://github.com/lrsjng/wepp/blob/master/src/wepp/lib/cssm
 
 ### v0.5.0 - *2012-02-??*
 
-* 
+* adds optional output of zipped size of processed files
 
 
 ### v0.4.0 - *2012-02-01*
