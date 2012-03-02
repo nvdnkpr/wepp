@@ -8,6 +8,7 @@
 		_ = require('underscore'),
 		less = require('less'),
 		uglify = require('uglify-js'),
+		gzipjs = require('gzip-js'),
 		cssmin = require('./cssmin'),
 		includify = require('./includify'),
 		fsExt = require('./fs-ext'),
@@ -17,7 +18,8 @@
 			charset: 'utf-8',
 			linebreak: -1,
 			compress: true,
-			stripHeader: false
+			stripHeader: false,
+			zippedSize: false
 		},
 		cmdLineUsage = function () {
 
@@ -45,7 +47,11 @@
 				'',
 				'    --sh',
 				'    --strip-header',
-				'        strips even header comments in case of compression'
+				'        strips even header comments in case of compression',
+				'',
+				'    --zs',
+				'    --zipped-size',
+				'        also print zipped size of processed files'
 			];
 			return lines.join('\n');
 		},
@@ -99,6 +105,10 @@
 					case '--strip-header':
 						parsed.options.stripHeader = true;
 						break;
+					case '--zs':
+					case '--zipped-size':
+						parsed.options.zippedSize = true;
+						break;
 					case '--in':
 					case '--inFile':
 						parsed.inFile = absFile(args.shift());
@@ -133,6 +143,11 @@
 				console.log(content);
 			}
 		},
+		gzip = function (content) {
+
+			// returns an array of bytes
+			return gzipjs.zip(content, {level: 5});
+		},
 		cssifyLess = function (settings, inFile, content, callback) {
 
 			var parserOpts = {
@@ -159,7 +174,7 @@
 		},
 		processCss = function (settings, inFile, outFile) {
 
-			var content, header;
+			var content, header, zipped;
 
 			if (outFile) {
 				message('css' + (settings.compress ? '+min' : ''), '\'' + inFile + '\' -> \'' + outFile + '\'');
@@ -170,7 +185,10 @@
 				if (settings.compress) {
 					content = (!settings.stripHeader ? header : '') + minifyCss(settings, content);
 				}
-				//message('size', content.length + ' bytes');
+				if (settings.zippedSize) {
+					zipped = gzip(content);
+				}
+				message('css' + (settings.compress ? '+min' : '') + ' size', content.length + ' bytes' + (zipped ? ' (gzip: ' + zipped.length + ')' : ''));
 				result(settings, outFile, content);
 			});
 		},
@@ -188,7 +206,7 @@
 		},
 		processJs = function (settings, inFile, outFile) {
 
-			var content, header;
+			var content, header, zipped;
 
 			if (outFile) {
 				message('js' + (settings.compress ? '+min' : ''), '\'' + inFile + '\' -> \'' + outFile + '\'');
@@ -199,7 +217,10 @@
 			if (settings.compress) {
 				content = (!settings.stripHeader ? header : '') + uglifyJs(settings, content);
 			}
-			message('js' + (settings.compress ? '+min' : '') + ' size', content.length + ' bytes');
+			if (settings.zippedSize) {
+				zipped = gzip(content);
+			}
+			message('js' + (settings.compress ? '+min' : '') + ' size', content.length + ' bytes' + (zipped ? ' (gzip: ' + zipped.length + ')' : ''));
 			result(settings, outFile, content);
 		},
 		processFile = function (options, inFile, outFile) {

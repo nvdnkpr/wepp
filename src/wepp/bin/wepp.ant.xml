@@ -2,16 +2,6 @@
 <project name="wepp.macros" basedir=".">
 
 
-	<macrodef name="bytes">
-		<attribute name="file" />
-		<attribute name="tofile" />
-		<sequential>
-			<length file="@{file}" property="@{file}-length" />
-			<length file="@{tofile}" property="@{tofile}-length" />
-			<echo>  bytes ${@{file}-length} -> ${@{tofile}-length}</echo>
-		</sequential>
-	</macrodef>
-
 	<macrodef name="wepp-args">
 		<attribute name="args" default="" />
 		<sequential>
@@ -34,7 +24,6 @@
 		<attribute name="tofile" />
 		<sequential>
 			<wepp-args args="--inFile '@{file}' --outFile '@{toFile}'" />
-			<bytes file="@{file}" toFile="@{toFile}" />
 		</sequential>
 	</macrodef>
 
